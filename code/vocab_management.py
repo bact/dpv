@@ -2650,7 +2650,7 @@ def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
         >>> generate_node_id("example text", "node-", 8)
         'node-5d4140f'
     """
-    text = text.replace(",", "").replace(".", "").replace("-", "").replace(" ", "")
+    text = text.strip()
     text = f"{DPV_VERSION}{text}"  # add version to make ID stable only wihtin the version
     hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
     return f"{prefix}{hash}"
