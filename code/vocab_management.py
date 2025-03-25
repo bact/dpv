@@ -1431,7 +1431,7 @@ RDF_VOCABS = {
         },
         'metadata': {
             "dct:title": "Legal Concepts for United Kingdom of Great Britain and Northern Ireland (GB)",
-            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing legal information for United Kingdom of Great Britain and Northern Ireland  as jurisdiction",
+            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing legal information for United Kingdom of Great Britain and Northern Ireland as jurisdiction",
             "dct:created": "2024-01-01",
             "dct:modified": DPV_PUBLISH_DATE,
             "dct:creator": "Harshvardhan J. Pandit",
@@ -2078,7 +2078,7 @@ RDF_VOCABS = {
         },
         'metadata': {
             "dct:title": "EU Data Governance Act (DGA)",
-            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing  information associated with EU DGA",
+            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing information associated with EU DGA",
             "dct:created": "2023-09-20",
             "dct:modified": DPV_PUBLISH_DATE,
             "dct:creator": "Beatriz Esteves, Harshvardhan J. Pandit, Georg P. Krog",
@@ -2106,7 +2106,7 @@ RDF_VOCABS = {
         },
         'metadata': {
             "dct:title": "EU Artificial Intelligence Act (AI Act)",
-            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing  information associated with EU AI Act",
+            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing information associated with EU AI Act",
             "dct:created": "2024-04-10",
             "dct:modified": DPV_PUBLISH_DATE,
             "dct:creator": "Delaram Golpayegani",
@@ -2125,7 +2125,7 @@ RDF_VOCABS = {
         },
         'metadata': {
             "dct:title": "EU Network and Information Services Directive (NIS2)",
-            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing  information associated with EU NIS2",
+            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing information associated with EU NIS2",
             "dct:created": "2024-05-19",
             "dct:modified": DPV_PUBLISH_DATE,
             "dct:creator": "Harshvardhan J. Pandit, Georg P. Krog",
@@ -2146,7 +2146,7 @@ RDF_VOCABS = {
         },
         'metadata': {
             "dct:title": "EU European Health Data Spaces (EHDS)",
-            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing  information associated with EU Health Data Spaces (EHDS)",
+            "dct:description": "Extension to the Data Privacy Vocabulary (DPV) providing concepts for representing information associated with EU Health Data Spaces (EHDS)",
             "dct:created": "2024-12-01",
             "dct:modified": DPV_PUBLISH_DATE,
             "dct:creator": "Beatriz Esteves, Harshvardhan J. Pandit",
@@ -2486,7 +2486,6 @@ RDF_COLLATIONS = ({
         f'{EXPORT_RDF_PATH}/legal/th/legal-th.ttl',
         f'{EXPORT_RDF_PATH}/legal/tw/legal-tw.ttl',
         f'{EXPORT_RDF_PATH}/legal/us/legal-us.ttl',
-
         ),
     'output': f'{EXPORT_RDF_PATH}/legal/legal',
 },)
@@ -2646,20 +2645,6 @@ def prefix_from_iri(iri):
             return f'{prefix}:{term}'
     return None
 
-def normalize_fixed_len(text: str, target_len: int = 0) -> str:
-    """Normalize text and make the text fixed length"""
-    text = text.strip()
-    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
-    text = text.replace(" ", "-")
-    text = re.sub(r"[^a-zA-Z0-9-]", "", text)
-    text = re.sub(r"-+", "-", text)
-    text = text.strip("-")
-    if target_len <= 0:
-        return text
-    if len(text) > target_len:
-        text = text[:target_len].strip("-")
-    return text.ljust(target_len, "0")
-
 
 # === contributors ==
 with open('./contributors.json', 'r') as fd:
@@ -2698,34 +2683,12 @@ def generate_authors_affiliations(authors):
     return authors
 
 
-def generate_node_id(
-    prefix: str, text: str, text_target_len: int, hash_target_len: int
-) -> str:
-    """takes a prefix and a text, returns a stable identifier"""
+def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
+    """takes an input text and an output prefix, returns a hash-based identifier at the specified length"""
     hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
-    text = normalize_fixed_len(text, text_target_len)
     if prefix.strip() == "":
-        return f"{text}-{hash}"
-    return f"{prefix}-{text}-{hash}"
-
-
-def generate_author_node_id(author: str) -> str:
-    """takes author name, returns a stable person identifier"""
-    affi = generate_author_affiliation(author)
-    author_affi = f"{author}-{affi}"
-
-    orcid = generate_author_orcid(author)
-    if orcid:
-        author_affi = normalize_fixed_len(author_affi, 16)
-        return f"person-{author_affi}-{orcid}"
-
-    return generate_node_id("person", author_affi, 16, 16)
-
-
-def generate_author_affiliation_node_id(author: str) -> str:
-    """takes author name, returns a stable org identifier"""
-    affi = generate_author_affiliation(author)
-    return generate_node_id("org", affi, 16, 16)
+        return f"{hash}"
+    return f"{prefix}-{hash}"
 
 
 def _person_slugify():
@@ -2744,8 +2707,8 @@ def _person_slugify():
         # if person_name.startswith('n')
         if person in people:
             return people[person]
-        bnode_person = BNode(generate_author_node_id(person_name))
-        bnode_org = BNode(generate_author_affiliation_node_id(person_name))
+        bnode_person = BNode()
+        bnode_org = BNode()
         triples = []
         triples.append((bnode_person, RDF.type, FOAF.Person))
         triples.append((bnode_person, RDF.type, DCT.Agent))
