@@ -7,8 +7,6 @@ import csv
 import hashlib
 import json
 import logging
-import re
-import unicodedata
 
 from rdflib import BNode, Literal, Namespace
 
@@ -2653,6 +2651,7 @@ def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
         'node-5d4140f'
     """
     text = text.replace(",", "").replace(".", "").replace("-", "").replace(" ", "")
+    text = f"{DPV_VERSION}{text}"  # add version to make ID stable only wihtin the version
     hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
     return f"{prefix}{hash}"
 

@@ -32,7 +32,7 @@ def construct_label(item, data, namespace, header):
     triples.append((namespace[term], SKOS.prefLabel, Literal(item, lang='en')))
     return triples
 
-def contruct_definition(item, data, namespace, header):
+def construct_definition(item, data, namespace, header):
     triples = []
     term, namespace = _get_term_from_prefix_notation(data['Term'], namespace)
     annotation = SKOS.definition
@@ -68,7 +68,7 @@ def construct_parent(item, data, namespace, header):
                         triples.append((parent, SKOS.narrower, namespace[term]))
         elif data['ParentType'] == 'sc':
             triples.append((namespace[term], RDFS.subClassOf, parent))
-            if term.split(':')[0] == item.split(':')[0]: 
+            if term.split(':')[0] == item.split(':')[0]:
                 triples.append((parent, RDFS.superClassOf, namespace[term]))
             if parent.startswith('https://w3id.org/dpv'):
                     triples.append((namespace[term], SKOS.broader, parent))
@@ -83,11 +83,11 @@ def construct_parent_taxonomy(item, data, namespace, header):
     term, namespace = _get_term_from_prefix_notation(data['Term'], namespace)
     # DEBUG(f'{term} parent taxonomy')
     # TODO: remove dpv:Concept as a concept
-    
+
     # turn parents (if non-empty) into IRIs
     parents_raw = data['ParentTerm'].strip()
     parents_raw = parents_raw.split(',')
-    parents = [] 
+    parents = []
     for parent in parents_raw:
         parent = parent.strip()
         if not parent:
@@ -321,7 +321,7 @@ def _term_with_namespace(term, namespace):
 def construct_iso_3166_alpha2(term, data, namespace, header):
     results = [(namespace[data['Term']], LOC.iso_alpha2, Literal(term))]
     results.append((
-        namespace[data['Term']], SKOS.exactMatch, 
+        namespace[data['Term']], SKOS.exactMatch,
         Literal(f"https://www.iso.org/obp/ui/#iso:code:3166:{term}", datatype=XSD.anyURI)))
     return results
 
@@ -329,7 +329,7 @@ def construct_iso_3166_alpha2(term, data, namespace, header):
 def construct_iso_3166_alpha3(term, data, namespace, header):
     results = [(namespace[data['Term']], LOC.iso_alpha3, Literal(term))]
     results.append((
-        namespace[data['Term']], SKOS.exactMatch, 
+        namespace[data['Term']], SKOS.exactMatch,
         Literal(f"https://op.europa.eu/web/eu-vocabularies/concept/-/resource?uri=http://publications.europa.eu/resource/authority/country/{term}", datatype=XSD.anyURI)))
     return results
 
@@ -384,7 +384,7 @@ def construct_webpage(term, data, namespace, header):
     triples = []
     for page in term.split(','):
         triples.append((
-            namespace[data['Term']], FOAF.homepage, 
+            namespace[data['Term']], FOAF.homepage,
             Literal(page, datatype=XSD.anyURI)))
     return triples
 
@@ -480,7 +480,7 @@ def construct_risk_parent_CIA(term, data, namespace, header):
         triples.append((namespace[data['Term']], RDF.type, RISK.IntegrityConcept))
     if 'A' in data['CIA']:
         triples.append((namespace[data['Term']], RDF.type, RISK.AvailabilityConcept))
-    return triples    
+    return triples
 
 
 def construct_risk_parent_Role(term, data, namespace, header):
@@ -494,10 +494,10 @@ def construct_risk_parent_Role(term, data, namespace, header):
         triples.append((namespace[data['Term']], RDF.type, RISK.PotentialConsequence))
     if 'I' in data['Role']:
         triples.append((namespace[data['Term']], RDF.type, RISK.PotentialImpact))
-    return triples    
+    return triples
 
 
-def contruct_gdpr_right_justification(term, data, namespace, header):
+def construct_gdpr_right_justification(term, data, namespace, header):
     triples = []
     rights = [namespace[x.strip()] for x in term.split(',')]
     for right in rights:
