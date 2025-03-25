@@ -2646,6 +2646,17 @@ def prefix_from_iri(iri):
     return None
 
 
+def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
+    """Takes an input text and generates a hash-based identifier, with a prefix if provided.
+    Example:
+        >>> generate_node_id("example text", "node-", 8)
+        'node-5d4140f'
+    """
+    text = text.replace(",", "").replace(".", "").replace("-", "").replace(" ", "")
+    hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
+    return f"{prefix}{hash}"
+
+
 # === contributors ==
 with open('./contributors.json', 'r') as fd:
     contributors = json.load(fd)
@@ -2683,12 +2694,16 @@ def generate_authors_affiliations(authors):
     return authors
 
 
-def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
-    """takes an input text and an output prefix, returns a hash-based identifier at the specified length"""
-    hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
-    if prefix.strip() == "":
-        return f"{hash}"
-    return f"{prefix}-{hash}"
+def generate_author_node_id(author: str) -> str:
+    """takes author name, returns a stable person identifier"""
+    affi = generate_author_affiliation(author)
+    return generate_node_id(f"{author}{affi}", "person-", 16)
+
+
+def generate_author_affiliation_node_id(author: str) -> str:
+    """takes author name, returns a stable org identifier"""
+    affi = generate_author_affiliation(author)
+    return generate_node_id(affi, "org-", 16)
 
 
 def _person_slugify():
@@ -2704,11 +2719,10 @@ def _person_slugify():
         nonlocal people
         person_name = person_name.strip()
         person = person_name.replace(',','').replace('.','').replace(' ','')
-        # if person_name.startswith('n')
         if person in people:
             return people[person]
-        bnode_person = BNode()
-        bnode_org = BNode()
+        bnode_person = BNode(generate_author_node_id(person))
+        bnode_org = BNode(generate_author_affiliation_node_id(person))
         triples = []
         triples.append((bnode_person, RDF.type, FOAF.Person))
         triples.append((bnode_person, RDF.type, DCT.Agent))
