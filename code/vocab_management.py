@@ -2644,16 +2644,16 @@ def prefix_from_iri(iri):
     return None
 
 
-def generate_node_id(text: str, prefix: str, hash_target_len: int) -> str:
+def generate_hash_id(text: str, output_prefix: str, output_hash_len: int) -> str:
     """Takes an input text and generates a hash-based identifier, with a prefix if provided.
     Example:
-        >>> generate_node_id("example text", "node-", 8)
-        'node-5d4140f'
+        >>> generate_hash_id("example text", "pre-", 8)
+        'pre-5d4140f'
     """
     text = text.strip()
     text = f"{DPV_VERSION}{text}"  # add version to make ID stable only wihtin the version
-    hash = hashlib.sha256(text.encode()).hexdigest()[:hash_target_len]
-    return f"{prefix}{hash}"
+    output_hash = hashlib.sha256(text.encode()).hexdigest()[:output_hash_len]
+    return f"{output_prefix}{output_hash}"
 
 
 # === contributors ==
@@ -2696,13 +2696,13 @@ def generate_authors_affiliations(authors):
 def generate_author_node_id(author: str) -> str:
     """takes author name, returns a stable person identifier"""
     affi = generate_author_affiliation(author)
-    return generate_node_id(f"{author}{affi}", "person-", 16)
+    return generate_hash_id(f"{author}{affi}", "person-", 16)
 
 
 def generate_author_affiliation_node_id(author: str) -> str:
     """takes author name, returns a stable org identifier"""
     affi = generate_author_affiliation(author)
-    return generate_node_id(affi, "org-", 16)
+    return generate_hash_id(affi, "org-", 16)
 
 
 def _person_slugify():

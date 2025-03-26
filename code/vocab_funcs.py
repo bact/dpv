@@ -237,7 +237,7 @@ def construct_source(item, data, namespace, header):
                 label = label.replace('(', '', 1)
             if url.endswith(')'):
                 url = url[::-1].replace(')', '', 1)[::-1] # reverse string
-            node_id = generate_node_id(f'{label}{url}', 'web-', 32)
+            node_id = generate_hash_id(f'{label}{url}', 'web-', 32)
             node = BNode(node_id)
             triples.append((node, RDF.type, SCHEMA.WebPage))
             triples.append((node, SCHEMA.name, Literal(label)))
