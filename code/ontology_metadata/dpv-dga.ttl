@@ -12,7 +12,7 @@
         "Harshvardhan J. Pandit" ;
     dct:created "2023-09-20"^^xsd:date ;
     dct:modified "2023-09-20"^^xsd:date ;
-    dct:description "The DGA extension to Data Privacy Vocabulary provides terms (classes and properties) related to EU Data Govenance Act."@en ;
+    dct:description "The DGA extension to Data Privacy Vocabulary provides terms (classes and properties) related to EU Data Governance Act."@en ;
     dct:source <https://www.w3.org/community/dpvcg/> ;
     dct:title "DPV-DGA: DGA Extension for DPV"@en ;
     vann:preferredNamespacePrefix "dpv-dga" ;
