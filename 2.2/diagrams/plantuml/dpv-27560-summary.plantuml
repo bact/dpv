@@ -1,0 +1,79 @@
+@startuml
+
+
+object "Record Header" as RecordHeader {
+    Unique ID
+    Schema Version
+    Data Subject
+}
+
+object "Processing Info" as ProcessingInfo {
+    Consent Notice
+    Language
+    Purposes
+}
+
+object Parties {
+}
+
+object Events {
+}
+
+object "Personal Data Info" as PersonalDataInfo {
+    Personal Data Type
+    Data Attribute ID
+    is Optional?
+    is Sensitive?
+    is Special Category?
+}
+
+object "Purpose Info" as PurposeInfo {
+    Purpose
+    Purpose Type
+    Legal Basis
+    Personal Data
+    Data Controller
+    Collection Method
+    Processing Method
+    Storage Method
+    Retention Method
+    Processing Location
+    Geographic Restriction
+    Service
+    Jurisdiction
+    Recipient Third Party
+    Withdrawal Method
+    Rights
+    Code of Conduct
+    Authority
+}
+
+object Party {
+    Party ID
+    Party Address
+    Party Email
+    Party URL
+    Party Name
+    Party Role
+    Party Contact
+    Party Type
+}
+
+object Event {
+    Event Time
+    Validity Duration
+    Entity ID
+    Event Type
+    Event State
+}
+
+object "Receipt Header" as ReceiptHeader {
+    Unique ID
+    Schema Version
+}
+
+object Information {
+}
+
+
+@enduml
