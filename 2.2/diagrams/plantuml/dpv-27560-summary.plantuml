@@ -1,0 +1,127 @@
+@startuml
+title Summary of Fields in ISO/IEC TS 27560:2023
+hide class circle
+hide methods
+top to bottom direction
+skinparam linetype polyline
+skinparam packageStyle rectangle
+
+<style>
+title {
+  FontSize 44
+}
+class {
+  MinimumWidth 200
+  LineThickness 2
+  RoundCorner 10
+  FontSize 24
+  Padding 10
+}
+package {
+  MinimumHeight 500
+  FontSize 36
+  Padding 10
+}
+arrow {
+  LineThickness 2
+  FontSize 20
+}
+</style>
+
+package "Consent Record" as ConsentRecord {
+    package "Header" as HeaderSection {
+        class "Header" as RecordHeader #FFF2CC {
+            **Unique ID**
+            **Schema Version**
+            **Data Subject**
+        }
+    }
+    package "Processing" as ProcessingSection {
+        class "Processing Info" as ProcessingInfo #F8CECC {
+            **Consent Notice**
+            **Language**
+            **Purposes**
+        }
+        class "Purpose Info" as PurposeInfo #F8CECC {
+            **Purpose**
+            Purpose Type
+            Legal Basis
+            **PersonalData**
+            **DataController**
+            Collection Method
+            Processing Method
+            **Storage Location**
+            **Retention Period**
+            **Processing Location**
+            Geographic Restriction
+            Service
+            **Jurisdiction**
+            **RecipientThirdParty**
+            **Withdrawal Method**
+            Rights
+            Code of Conduct
+            Impact Assessment
+            Authority
+        }
+        class "Personal Data Info" as PersonalDataInfo #F8CECC {
+            **Personal Data Type**
+            Data Attribute ID
+            is Optional?
+            is Sensitive?
+            is Special Category?
+        }
+    }
+    package "Parties" as PartiesSection {
+        class Parties #E1D5E7 {
+        }
+        class Party #E1D5E7 {
+            **Party ID**
+            **Party Address**
+            Party Email
+            Party URL
+            **Party Name**
+            Party Role
+            **Party Contact**
+            **Party Type**
+        }
+    }
+    package "Events" as EventsSection {
+        class Events #D5E8D4 {
+        }
+        class Event #D5E8D4 {
+            **Event Time**
+            **Validity Duration**
+            **EntityID**
+            **Event Type**
+            **Event State**
+        }
+    }
+}
+
+package "Consent Receipt" as ConsentReceipt {
+    class "Header" as ReceiptHeader #FFF2CC {
+        **Unique ID**
+        **Schema Version**
+    }
+    class "Information" as ReceiptInformation #F5F5F5 {
+    }
+}
+
+' Define the relationships
+ProcessingInfo::Purposes -right-> PurposeInfo : for each\npurpose
+PurposeInfo::PersonalData -right-> PersonalDataInfo : for each\npersonal data
+
+PurposeInfo::DataController --> Party : reference\nto party
+PurposeInfo::RecipientThirdParty --> Party : reference\nto party
+PurposeInfo::Authority --> Party : reference\nto party
+
+Parties --> Party : for each\nparty
+
+Events --> Event : for each\nevent
+Event::EntityID --> Party : reference\nto party
+
+HeaderSection -[hidden]right-> ProcessingSection
+ProcessingSection -[hidden]right-> PartiesSection
+PartiesSection -[hidden]right-> EventsSection
+
+@enduml
