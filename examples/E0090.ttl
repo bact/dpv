@@ -9,7 +9,7 @@
 #   pd:VehicalLicenseNumber, pd:VehicalLicenseRegistration,
 #   pd:TravelHistory, pd:Transactional,
 #   dpv:Pseudonymisation,
-#   eu-gdpr:A6-1-c, eu-gdpr:A6-1-e-public-interest
+#   eu-gdpr:A6-1-e-official-authority, eu-gdpr:A6-1-e-public-interest
 #
 # First use: all listed terms
 
@@ -27,7 +27,7 @@ ex:TollCollection a dpv:Process ;
     dpv:hasPurpose sector-infra:RoadTollCollection ;
     dpv:hasDataController ex:HighwayAuthority ;
     dpv:hasDataSubject ex:RoadUsers ;
-    dpv:hasLegalBasis eu-gdpr:A6-1-c ; # legal obligation to charge road fees
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority ; # toll authority exercises public task
     dpv:hasPersonalData pd:VehicalLicenseNumber, pd:VehicalLicenseRegistration,
         pd:Location, pd:Transactional ;
     dpv:hasProcessing dpv:Collect, dpv:Use, dpv:Store ;

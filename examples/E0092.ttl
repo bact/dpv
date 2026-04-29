@@ -14,10 +14,6 @@
 #
 # First use: all listed terms
 
-# Note that VehicalLicenseNumber is misspelled,
-# see https://github.com/w3c/dpv/issues/460
-# When fixed the ontology, fix here too.
-
 @prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
 
 # Public transport ticketing: a transit authority manages travel cards
@@ -37,13 +33,14 @@ ex:FareEvasionDetection a dpv:Process ;
     dpv:hasDataController ex:TransitAuthority ;
     dpv:hasDataSubject dpv:ServiceConsumer ;
     dpv:hasLegalBasis eu-gdpr:A6-1-f ; # legitimate interest of controller
-    dpv:hasPersonalData pd:TravelHistory, pd:VehicalLicenseNumber ;
+    dpv:hasPersonalData pd:TravelHistory, pd:AccountIdentifier ;
     dpv:hasProcessing dpv:Analyse ;
     dpv:hasTechnicalMeasure dpv:Pseudonymisation .
 
 ex:PassengerFlowResearch a dpv:Process ;
     dpv:hasPurpose sector-infra:PublicTransportPassengerFlowAnalysis ;
     dpv:hasDataController ex:TransitAuthority ;
+    dpv:hasDataSubject dpv:ServiceConsumer ;
     dpv:hasLegalBasis eu-gdpr:A6-1-e-public-interest ;
     dpv:hasPersonalData pd:TravelHistory, pd:Location ;
     dpv:hasProcessing dpv:Analyse ;

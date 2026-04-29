@@ -10,7 +10,7 @@
 #   sector-publicservices:SocialWelfareEnrolmentManagement,
 #   dpv:Citizen, dpv:PublicSectorBody, dpv:GovernmentalOrganisation,
 #   eu-gdpr:A6-1-e-official-authority,
-#   pd:Income, pd:Financial, pd:BankAccount, pd:Residency, pd:MaritalStatus
+#   pd:Income, pd:Financial, pd:OfficialID, pd:BankAccount, pd:Residency, pd:MaritalStatus
 #
 # First use: all listed terms
 

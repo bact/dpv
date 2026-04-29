@@ -23,7 +23,7 @@ ex:SmartMeterElectricity a dpv:Process ;
     dpv:hasDataController ex:ElectricityUtility ;
     dpv:hasDataSubject dpv:ServiceConsumer ;
     dpv:hasLegalBasis eu-gdpr:A6-1-c ; # legal obligation (metering regulation)
-    dpv:hasPersonalData pd:Financial, pd:Transactional,
+    dpv:hasPersonalData pd:Transactional,
         ex:EnergyConsumptionProfile ; # usage pattern at household level
     dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
     dpv:hasTechnicalMeasure dpv:EncryptionAtRest, dpv:EncryptionInTransfer .
@@ -38,7 +38,8 @@ ex:SmartMeterWater a dpv:Process ;
     dpv:hasDataSubject dpv:ServiceConsumer ;
     dpv:hasLegalBasis eu-gdpr:A6-1-c ;
     dpv:hasPersonalData pd:Transactional ;
-    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use .
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
+    dpv:hasTechnicalMeasure dpv:EncryptionAtRest, dpv:EncryptionInTransfer .
 
 ex:ElectricityUtility a dpv:PublicSectorBody .
 ex:WaterUtility a dpv:PublicSectorBody .

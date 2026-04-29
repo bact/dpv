@@ -5,9 +5,8 @@
 # public services purposes for immigration, biometric data as special category
 # personal data requiring Art. 9(2)(g) legal basis, and use of loc: for jurisdiction.
 #
-# Terms: sector-publicservices:PublicServiceEligibilityAssessment,
-#   sector-publicservices:PublicServiceManagement,
-#   dpv:Immigrant, eu-gdpr:A9-2-g,
+# Terms: sector-publicservices:PublicServiceManagement,
+#   dpv:Immigrant, dpv:ProtectionOfNationalSecurity, eu-gdpr:A9-2-g,
 #   pd:Passport, pd:Nationality, pd:BirthCountry, pd:Criminal
 #
 # First use: all listed terms
@@ -19,13 +18,12 @@
 # Data subjects span tourists, immigrants, and asylum seekers.
 
 ex:BorderEntryControl a dpv:Process ;
-    dpv:hasPurpose dpv:IdentityVerification,
-        sector-publicservices:PublicServiceEligibilityAssessment ;
+    dpv:hasPurpose dpv:IdentityVerification, dpv:ProtectionOfNationalSecurity ;
     dpv:hasDataController ex:BorderControlAuthority ;
     dpv:hasDataSubject dpv:Tourist, dpv:Immigrant ;
     dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority ;
     dpv:hasPersonalData pd:Passport, pd:Nationality, pd:BirthCountry,
-        pd:TravelHistory, pd:FacialPrint ;
+        pd:TravelHistory ;
     dpv:hasProcessing dpv:Collect, dpv:Use, dpv:Store ;
     dpv:hasJurisdiction loc:EU ;
     dpv:hasContext dpv:SystematicMonitoring .

@@ -72,6 +72,8 @@ ex:TransportHubCCTV a dpv:Process ;
     dpv:hasLocation dpv:PubliclyAccessibleSpace ;
     dpv:hasLocation loc:IE . # deploying authority jurisdiction
 
+ex:FaceRecognitionAlgo a dpv:AlgorithmicLogic .
+
 ex:MunicipalAuthority a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .
 ex:LawEnforcementBody a dpv:LawEnforcementOrganisation .
 ex:TransitAuthority a dpv:PublicSectorBody .
