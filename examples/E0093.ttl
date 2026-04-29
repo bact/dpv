@@ -1,0 +1,44 @@
+# EXAMPLE 93: Smart meter data collection for critical utility infrastructure
+#
+# Electricity and water utilities collect fine-grained consumption data from
+# smart meters under legal obligation. Demonstrates that usage readings at
+# household level constitute personal data, the use of critical energy and
+# water management purposes, and encryption as a technical safeguard.
+#
+# Terms: sector-infra:CriticalElectricityManagement,
+#   sector-infra:CriticalWaterManagement,
+#   dpv:EncryptionAtRest, dpv:EncryptionInTransfer
+#
+# First use: all listed terms
+
+@prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
+
+# Critical utility infrastructure: an electricity/water utility collects
+# smart-meter readings to manage the grid and bill customers.
+# Readings at fine granularity can reveal household behaviour patterns
+# and are therefore personal data.
+
+ex:SmartMeterElectricity a dpv:Process ;
+    dpv:hasPurpose sector-infra:CriticalElectricityManagement ;
+    dpv:hasDataController ex:ElectricityUtility ;
+    dpv:hasDataSubject dpv:ServiceConsumer ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-c ; # legal obligation (metering regulation)
+    dpv:hasPersonalData pd:Financial, pd:Transactional,
+        ex:EnergyConsumptionProfile ; # usage pattern at household level
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
+    dpv:hasTechnicalMeasure dpv:EncryptionAtRest, dpv:EncryptionInTransfer .
+
+ex:EnergyConsumptionProfile a dpv:PersonalData ;
+    skos:broader pd:Transactional ;
+    dct:description "Fine-grained electricity consumption records that can reveal household activity patterns"@en .
+
+ex:SmartMeterWater a dpv:Process ;
+    dpv:hasPurpose sector-infra:CriticalWaterManagement ;
+    dpv:hasDataController ex:WaterUtility ;
+    dpv:hasDataSubject dpv:ServiceConsumer ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-c ;
+    dpv:hasPersonalData pd:Transactional ;
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use .
+
+ex:ElectricityUtility a dpv:PublicSectorBody .
+ex:WaterUtility a dpv:PublicSectorBody .

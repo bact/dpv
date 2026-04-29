@@ -1,0 +1,52 @@
+# EXAMPLE 92: Public transport ticketing, fraud detection, and passenger flow analysis
+#
+# A transit authority manages travel card data for service provision (contract),
+# detects fare evasion (legitimate interest), and analyses passenger flows
+# using anonymised data (public interest). Demonstrates public transport
+# infrastructure purposes across three distinct legal bases.
+#
+# Terms: sector-infra:PublicTransportTicketManagement,
+#   sector-infra:PublicTransportServiceProvision,
+#   sector-infra:PublicTransportFraudManagement,
+#   sector-infra:PublicTransportPassengerFlowAnalysis,
+#   dpv:ServiceConsumer, dpv:Anonymisation,
+#   eu-gdpr:A6-1-b, eu-gdpr:A6-1-f
+#
+# First use: all listed terms
+
+# Note that VehicalLicenseNumber is misspelled,
+# see https://github.com/w3c/dpv/issues/460
+# When fixed the ontology, fix here too.
+
+@prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
+
+# Public transport ticketing: a transit authority manages travel cards
+# (purchase, validation, top-up) and detects fare evasion/fraud.
+
+ex:TransitCardManagement a dpv:Process ;
+    dpv:hasPurpose sector-infra:PublicTransportTicketManagement,
+        sector-infra:PublicTransportServiceProvision ;
+    dpv:hasDataController ex:TransitAuthority ;
+    dpv:hasDataSubject dpv:ServiceConsumer ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-b ; # contract for transport service
+    dpv:hasPersonalData pd:Transactional, pd:Financial, pd:TravelHistory ;
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use .
+
+ex:FareEvasionDetection a dpv:Process ;
+    dpv:hasPurpose sector-infra:PublicTransportFraudManagement ;
+    dpv:hasDataController ex:TransitAuthority ;
+    dpv:hasDataSubject dpv:ServiceConsumer ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-f ; # legitimate interest of controller
+    dpv:hasPersonalData pd:TravelHistory, pd:VehicalLicenseNumber ;
+    dpv:hasProcessing dpv:Analyse ;
+    dpv:hasTechnicalMeasure dpv:Pseudonymisation .
+
+ex:PassengerFlowResearch a dpv:Process ;
+    dpv:hasPurpose sector-infra:PublicTransportPassengerFlowAnalysis ;
+    dpv:hasDataController ex:TransitAuthority ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-public-interest ;
+    dpv:hasPersonalData pd:TravelHistory, pd:Location ;
+    dpv:hasProcessing dpv:Analyse ;
+    dpv:hasTechnicalMeasure dpv:Anonymisation . # aggregate statistics only
+
+ex:TransitAuthority a dpv:PublicSectorBody .

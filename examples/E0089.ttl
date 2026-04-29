@@ -1,0 +1,43 @@
+# EXAMPLE 89: Assessing eligibility and enrolment for social welfare benefits
+#
+# A government housing authority collects and uses personal data to assess
+# whether a citizen qualifies for housing benefit and to enrol them in the
+# programme. Demonstrates use of sector-specific public services purposes,
+# official authority as legal basis, and relevant personal data categories.
+#
+# Terms: sector-publicservices:SocialWelfareEligibilityAssessment,
+#   sector-publicservices:HousingWelfareManagement,
+#   sector-publicservices:SocialWelfareEnrolmentManagement,
+#   dpv:Citizen, dpv:PublicSectorBody, dpv:GovernmentalOrganisation,
+#   eu-gdpr:A6-1-e-official-authority,
+#   pd:Income, pd:Financial, pd:BankAccount, pd:Residency, pd:MaritalStatus
+#
+# First use: all listed terms
+
+@prefix sector-publicservices: <https://w3id.org/dpv/sector/publicservices#> .
+
+# Social welfare eligibility assessment: a government body assesses
+# whether a citizen qualifies for housing benefit.
+# Legal basis: official authority (GDPR Art. 6(1)(e)).
+
+ex:HousingBenefitAssessment a dpv:Process ;
+    dpv:hasPurpose sector-publicservices:SocialWelfareEligibilityAssessment,
+        sector-publicservices:HousingWelfareManagement ;
+    dpv:hasDataController ex:HousingAuthority ;
+    dpv:hasDataSubject dpv:Citizen ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority ;
+    dpv:hasPersonalData pd:Income, pd:OfficialID, pd:Residency,
+        pd:MaritalStatus, pd:Financial ;
+    dpv:hasProcessing dpv:Collect, dpv:Use, dpv:Store .
+
+ex:HousingAuthority a dpv:PublicSectorBody, dpv:GovernmentalOrganisation ;
+    dct:description "Local government housing authority"@en .
+
+# After eligibility is confirmed, enrolment in the benefit programme
+ex:HousingBenefitEnrolment a dpv:Process ;
+    dpv:hasPurpose sector-publicservices:SocialWelfareEnrolmentManagement ;
+    dpv:hasDataController ex:HousingAuthority ;
+    dpv:hasDataSubject dpv:Citizen ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority ;
+    dpv:hasPersonalData pd:OfficialID, pd:BankAccount ;
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use .

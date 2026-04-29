@@ -1,0 +1,59 @@
+# EXAMPLE 94: Immigration and border control processing of traveller data
+#
+# Border and immigration authorities process passport, biometric, and travel
+# history data for identity verification and asylum case management. Demonstrates
+# public services purposes for immigration, biometric data as special category
+# personal data requiring Art. 9(2)(g) legal basis, and use of loc: for jurisdiction.
+#
+# Terms: sector-publicservices:PublicServiceEligibilityAssessment,
+#   sector-publicservices:PublicServiceManagement,
+#   dpv:Immigrant, eu-gdpr:A9-2-g,
+#   pd:Passport, pd:Nationality, pd:BirthCountry, pd:Criminal
+#
+# First use: all listed terms
+
+@prefix sector-publicservices: <https://w3id.org/dpv/sector/publicservices#> .
+
+# Immigration and border control: a border authority verifies traveller
+# identity, screens passports, and manages visa/entry decisions.
+# Data subjects span tourists, immigrants, and asylum seekers.
+
+ex:BorderEntryControl a dpv:Process ;
+    dpv:hasPurpose dpv:IdentityVerification,
+        sector-publicservices:PublicServiceEligibilityAssessment ;
+    dpv:hasDataController ex:BorderControlAuthority ;
+    dpv:hasDataSubject dpv:Tourist, dpv:Immigrant ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority ;
+    dpv:hasPersonalData pd:Passport, pd:Nationality, pd:BirthCountry,
+        pd:TravelHistory, pd:FacialPrint ;
+    dpv:hasProcessing dpv:Collect, dpv:Use, dpv:Store ;
+    dpv:hasJurisdiction loc:EU ;
+    dpv:hasContext dpv:SystematicMonitoring .
+
+# Facial print is biometric → special category under GDPR Art. 9
+ex:BiometricPassportVerification a dpv:Process ;
+    dpv:hasPurpose dpv:IdentityVerification ;
+    dpv:hasDataController ex:BorderControlAuthority ;
+    dpv:hasDataSubject dpv:Tourist, dpv:Immigrant ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority,
+        eu-gdpr:A9-2-g ; # Art. 9(2)(g) substantial public interest
+    dpv:hasPersonalData [
+        a dpv:SpecialCategoryPersonalData ;
+        skos:broader pd:Biometric, pd:FacialPrint ;
+    ] ;
+    dpv:hasProcessing dpv:Collect, dpv:Use .
+
+# Asylum application: processing sensitive personal data under Art. 9
+ex:AsylumApplicationProcessing a dpv:Process ;
+    dpv:hasPurpose sector-publicservices:PublicServiceManagement ;
+    dpv:hasDataController ex:ImmigrationAgency ;
+    dpv:hasDataSubject dpv:AsylumSeeker ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-c, # legal obligation to process claims
+        eu-gdpr:A9-2-g ;
+    dpv:hasPersonalData pd:Nationality, pd:BirthCountry, pd:Passport,
+        pd:Criminal, pd:MedicalHealth ; # health/criminal records for eligibility
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
+    dpv:hasLocation loc:EU .
+
+ex:BorderControlAuthority a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .
+ex:ImmigrationAgency a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .

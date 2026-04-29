@@ -1,0 +1,45 @@
+# EXAMPLE 90: Road toll collection and fraud detection using vehicle data
+#
+# A highway authority uses automatic number plate recognition (ANPR) to
+# collect vehicle and location data for charging road tolls (legal obligation)
+# and detecting evasion (public interest). Demonstrates infrastructure
+# purposes for toll management and pseudonymisation as a technical measure.
+#
+# Terms: sector-infra:RoadTollCollection, sector-infra:RoadTollManagement,
+#   pd:VehicalLicenseNumber, pd:VehicalLicenseRegistration,
+#   pd:TravelHistory, pd:Transactional,
+#   dpv:Pseudonymisation,
+#   eu-gdpr:A6-1-c, eu-gdpr:A6-1-e-public-interest
+#
+# First use: all listed terms
+
+# Note that VehicalLicenseNumber and VehicalLicenseRegistration
+# are misspelled, see https://github.com/w3c/dpv/issues/460
+# When fixed the ontology, fix here too.
+
+@prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
+
+# Road toll collection using automatic number plate recognition (ANPR).
+# A highway authority collects vehicle identifiers and location data
+# to charge tolls and detect fraud/evasion.
+
+ex:TollCollection a dpv:Process ;
+    dpv:hasPurpose sector-infra:RoadTollCollection ;
+    dpv:hasDataController ex:HighwayAuthority ;
+    dpv:hasDataSubject ex:RoadUsers ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-c ; # legal obligation to charge road fees
+    dpv:hasPersonalData pd:VehicalLicenseNumber, pd:VehicalLicenseRegistration,
+        pd:Location, pd:Transactional ;
+    dpv:hasProcessing dpv:Collect, dpv:Use, dpv:Store ;
+    dpv:hasTechnicalMeasure dpv:Pseudonymisation .
+
+ex:TollFraudDetection a dpv:Process ;
+    dpv:hasPurpose sector-infra:RoadTollManagement ;
+    dpv:hasDataController ex:HighwayAuthority ;
+    dpv:hasDataSubject ex:RoadUsers ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-public-interest ;
+    dpv:hasPersonalData pd:VehicalLicenseNumber, pd:TravelHistory ;
+    dpv:hasProcessing dpv:Analyse .
+
+ex:HighwayAuthority a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .
+ex:RoadUsers a dpv:DataSubject .

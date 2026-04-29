@@ -1,0 +1,77 @@
+# EXAMPLE 95: CCTV surveillance in publicly accessible spaces
+#
+# Three CCTV scenarios: general public safety monitoring, automated face
+# recognition using biometric special category data (Art. 9(2)(g)), and
+# transport hub surveillance. Demonstrates physical surveillance as a measure,
+# systematic monitoring as context, passively involved data subjects, and
+# implied consent via signage notice.
+#
+# Terms: sector-infra:PublicTransportSafetyManagement,
+#   dpv:ProtectionOfPublicSecurity, dpv:Counterterrorism,
+#   dpv:PhysicalSurveillance, dpv:hasPhysicalMeasure,
+#   dpv:PubliclyAccessibleSpace, dpv:PubliclyOwnedSpace,
+#   dpv:PassivelyInvolved, dpv:LawEnforcementOrganisation,
+#   pd:Picture
+#
+# First use: all listed terms
+
+@prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
+
+# CCTV surveillance in publicly accessible spaces (streets, transport hubs).
+# Persons in the space are passively involved - not active data subjects.
+# Signage at entry constitutes implied consent notice.
+
+# Part 1: General CCTV for public safety (no face recognition)
+ex:PublicCCTV a dpv:Process ;
+    dpv:hasPurpose dpv:ProtectionOfPublicSecurity, dpv:EnforceSecurity ;
+    dpv:hasDataController ex:MunicipalAuthority ;
+    dpv:hasDataSubject ex:SpaceUsers ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-public-interest ;
+    dpv:hasPersonalData pd:Picture, pd:Location ;
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
+    dpv:hasContext dpv:SystematicMonitoring ;
+    dpv:hasPhysicalMeasure dpv:PhysicalSurveillance ;
+    dpv:hasLocation dpv:PubliclyAccessibleSpace, dpv:PubliclyOwnedSpace ;
+    dpv:hasJurisdiction loc:EU ;
+    dpv:hasNotice [
+        a dpv:Notice ;
+        dct:description "CCTV in operation – signage at all entrances"@en ;
+    ] .
+
+ex:SpaceUsers a dpv:DataSubject ;
+    dpv:hasEntityInvolvement dpv:PassivelyInvolved .
+
+# Part 2: CCTV with automated face recognition
+# Biometric processing → special category (Art. 9); higher legal bar required
+ex:FaceRecognitionCCTV a dpv:Process ;
+    dpv:hasPurpose dpv:ProtectionOfPublicSecurity, dpv:Counterterrorism ;
+    dpv:hasDataController ex:LawEnforcementBody ;
+    dpv:hasDataSubject ex:SpaceUsers ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-official-authority,
+        eu-gdpr:A9-2-g ; # substantial public interest
+    dpv:hasPersonalData [
+        a dpv:SpecialCategoryPersonalData ;
+        skos:broader pd:Biometric, pd:FacialPrint ;
+    ], pd:Picture, pd:Location ;
+    dpv:hasProcessing dpv:Collect, dpv:Analyse, dpv:Use ;
+    dpv:hasContext dpv:SystematicMonitoring, dpv:AutomatedDecisionMaking ;
+    dpv:hasPhysicalMeasure dpv:PhysicalSurveillance ;
+    dpv:hasAlgorithmicLogic ex:FaceRecognitionAlgo ;
+    dpv:hasLocation dpv:PubliclyAccessibleSpace ;
+    dpv:hasJurisdiction loc:EU .
+
+# Part 3: CCTV specifically on public transport infrastructure
+ex:TransportHubCCTV a dpv:Process ;
+    dpv:hasPurpose sector-infra:PublicTransportSafetyManagement ;
+    dpv:hasDataController ex:TransitAuthority ;
+    dpv:hasDataSubject ex:SpaceUsers ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-e-public-interest ;
+    dpv:hasPersonalData pd:Picture, pd:Location ;
+    dpv:hasProcessing dpv:Collect, dpv:Store, dpv:Use ;
+    dpv:hasPhysicalMeasure dpv:PhysicalSurveillance ;
+    dpv:hasLocation dpv:PubliclyAccessibleSpace ;
+    dpv:hasLocation loc:IE . # deploying authority jurisdiction
+
+ex:MunicipalAuthority a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .
+ex:LawEnforcementBody a dpv:LawEnforcementOrganisation .
+ex:TransitAuthority a dpv:PublicSectorBody .

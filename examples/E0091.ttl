@@ -1,0 +1,46 @@
+# EXAMPLE 91: Emergency response call handling, triage, and dispatch
+#
+# An emergency dispatch centre processes personal data across three linked
+# activities — receiving a call, triaging the situation, and dispatching
+# responders. Demonstrates critical infrastructure emergency response
+# purposes and the vital interests legal basis for health and location data.
+#
+# Terms: sector-infra:CriticalEmergencyResponseCommunicationManagement,
+#   sector-infra:CriticalEmergencyResponseTriage,
+#   sector-infra:CriticalEmergencyResponseDispatchManagement,
+#   dpv:EmergencyHealthcareProvider,
+#   eu-gdpr:A6-1-d, pd:PhysicalAddress
+# First use: all listed terms
+
+@prefix sector-infra: <https://w3id.org/dpv/sector/infra#> .
+
+# Emergency response: a dispatch centre receives a call, triages the
+# situation, and dispatches responders. Personal data (caller location,
+# health state) are processed under vital interest legal basis.
+
+ex:EmergencyCallHandling a dpv:Process ;
+    dpv:hasPurpose sector-infra:CriticalEmergencyResponseCommunicationManagement ;
+    dpv:hasDataController ex:EmergencyDispatchCentre ;
+    dpv:hasDataSubject dpv:HumanSubject ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-d ; # vital interests of data subject
+    dpv:hasPersonalData pd:Location, pd:Health, pd:PhysicalAddress ;
+    dpv:hasProcessing dpv:Collect, dpv:Use .
+
+ex:EmergencyTriage a dpv:Process ;
+    dpv:hasPurpose sector-infra:CriticalEmergencyResponseTriage ;
+    dpv:hasDataController ex:EmergencyDispatchCentre ;
+    dpv:hasDataSubject dpv:HumanSubject ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-d ;
+    dpv:hasPersonalData pd:Health, pd:Location ;
+    dpv:hasProcessing dpv:Use, dpv:Analyse .
+
+ex:EmergencyDispatch a dpv:Process ;
+    dpv:hasPurpose sector-infra:CriticalEmergencyResponseDispatchManagement ;
+    dpv:hasDataController ex:EmergencyDispatchCentre ;
+    dpv:hasDataSubject dpv:HumanSubject ;
+    dpv:hasLegalBasis eu-gdpr:A6-1-d ;
+    dpv:hasRecipient dpv:EmergencyHealthcareProvider ;
+    dpv:hasPersonalData pd:Location, pd:PhysicalAddress ;
+    dpv:hasProcessing dpv:Use, dpv:Share .
+
+ex:EmergencyDispatchCentre a dpv:PublicSectorBody, dpv:GovernmentalOrganisation .
